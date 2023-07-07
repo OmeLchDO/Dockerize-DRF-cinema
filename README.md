@@ -1,33 +1,55 @@
-# Dockerizing DRF Cinema
+# Cinema API
 
-- Read [the guideline](https://github.com/mate-academy/py-task-guideline/blob/main/README.md) before start
-- Useful [link](https://soshace.com/dockerizing-django-with-postgres-redis-and-celery/) about theory 
-  (without Celery & redis of course)
+API services for cinema management written on DRF
 
-## Task:
+## Installing using GitHub and create database
 
-Here, you need to fully dockerize this existing DRF project Cinema. 
-You need to make your service fully independent of your local machine.
-So the only requirement to run your project is `Docker`.
-
-### Task requirements:
-- Use `.dockerignore` for ignoring unnecessary stuff in your images;
-- Use `Dockerfile` for building `app` image with DRF application;
-- Use `docker-compose.yml` file for managing multiple services (containers) at the same time;
-- Switch to `PostgreSQL` database instead of `SQLite` using official docker image;
-- Implement `wait_for_db` 
-  [management command](https://docs.djangoproject.com/en/4.0/howto/custom-management-commands/), 
-  which waits for the database to be available. 
-  So your services won't throw any errors during the `docker-compose up` command;
-- Make your docker images as thin as possible;
-- Use good practices of how to handle media, static files & volumes with docker.
+- git clone https://github.com/OmeLchDO/Dockerize-DRF-cinema.git
+- cd Dockerize-DRF-cinema
+- python -m venv venv
+- venv/Scripts/activate (for Windows)
+  or source venv/bin/activate (for MacOS, Linux)
+- pip install -r requirements.txt
+- python manage.py migrate
+- python manage.py runserver
 
 
-### How to check, that task is done:
-- Run `docker-compose up` command, and check with `docker ps`, that 2 services are up and running
-  (here check, that `app` is always waiting for `db` using `wait_for_db` command);
-- Go to `127.0.0.1:8000/api/` and check project endpoints via DRF interface (image uploading for sure);
-- Create new admin user. Enter container `docker exec -it <container_name> bash`, and create in from there;
-- Run tests using different approach: `docker-compose run app sh -c "python manage.py test"`;
-- If needed, also check the flake8: `docker-compose run app sh -c "flake8"`.
-- If everything is working fine - you are ready to push your code :).
+## Install PostgresSQL and create db
+
+create .env by example:
+
+```
+POSTGRES_HOST=<your db hostname>
+POSTGRES_DB=<your db name>
+POSTGRES_USER=<your db username>
+POSTGRES_PASSWORD=<your db password>
+```
+
+## Run with docker
+
+https://hub.docker.com/r/omelchdo/dockercinema
+
+Docker should be installed
+
+```
+docker-compose build
+docker-compose up
+```
+
+
+## Getting access
+
+- create user via /api/user/register/
+- get access token via /api/user/token/
+
+
+## Features
+
+- JWT authenticated
+- Admin panel /admin/
+- Documentation is located at /api/doc/swagger/
+- Managing orders and tickets
+- Creating movies with genres, actors
+- Creating cinema halls
+- Adding movie session
+- Filtering movies and movie session
